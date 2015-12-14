@@ -1,16 +1,9 @@
 package com.mahan.present.com.mahan.present.controller;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-//import java.beans.Statement;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
-
 import javax.swing.*;
 
 import com.mahan.connector.ConnectorLayer;
@@ -39,23 +32,23 @@ public class MainFrame extends JFrame {
 	private List<CourseUI> courseArray;
 	private List<ProfessorUI> professorArray;
 	private StudentTablePanel StudenttablePanel;
-	private StudentFormPanel studentForm;
-	private CourseFormPanel courseForm;
+	private StudentFormPanel studentFormPanel;
+	private CourseFormPanel courseFormPanel;
 	private CourseTablePanel courseTablePanel;
-	private ProfessorFormPanel professorForm;
+	private ProfessorFormPanel professorFormPanel;
 	private ProfessorTablePanel professorTablePanel;
 	private ToolBar toolbar;
-	private ConnectorLayer controler;
+	private ConnectorLayer controlerLayer;
 
 	public MainFrame() {
 		tab = new JTabbedPane();
 		toolbar = new ToolBar();
-		controler = new ConnectorLayer();
+		controlerLayer = new ConnectorLayer();
+		setLayout(new BorderLayout());
 		setTitle("Admin Environment");
 		setSize(1000, 800);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		setLayout(new BorderLayout());
 		setJMenuBar(createMenu());
 		createStudentTab();
 		createCourseTab();
@@ -87,7 +80,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void rowDeleted(int row) {
 				professorArray.remove(row);
-				courseForm.setDataUtilArray(professorArray);
+				courseFormPanel.setDataUtilArray(professorArray);
 			}
 		});
 
@@ -101,13 +94,10 @@ public class MainFrame extends JFrame {
 				
 
 				 try {
-					controler.save(studentArray);
+					controlerLayer.save(studentArray);
 				} catch (SQLException e) {
 					//JOptionPane.showConfirmDialog(arg0, arg1)
 				}
-				
-			
-				
 			}
 
 			@Override
@@ -190,9 +180,9 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				studentForm.setBackground(Color.red);
-				professorForm.setBackground(Color.red);
-				courseForm.setBackground(Color.red);
+				studentFormPanel.setBackground(Color.red);
+				professorFormPanel.setBackground(Color.red);
+				courseFormPanel.setBackground(Color.red);
 			}
 		});
 
@@ -200,9 +190,9 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				studentForm.setBackground(Color.blue);
-				professorForm.setBackground(Color.blue);
-				courseForm.setBackground(Color.blue);
+				studentFormPanel.setBackground(Color.blue);
+				professorFormPanel.setBackground(Color.blue);
+				courseFormPanel.setBackground(Color.blue);
 			}
 		});
 
@@ -210,9 +200,9 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				studentForm.setBackground(Color.green);
-				professorForm.setBackground(Color.green);
-				courseForm.setBackground(Color.green);
+				studentFormPanel.setBackground(Color.green);
+				professorFormPanel.setBackground(Color.green);
+				courseFormPanel.setBackground(Color.green);
 			}
 		});
 
@@ -220,9 +210,9 @@ public class MainFrame extends JFrame {
 
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
-				studentForm.setBackground(Color.lightGray);
-				professorForm.setBackground(Color.lightGray);
-				courseForm.setBackground(Color.lightGray);
+				studentFormPanel.setBackground(Color.lightGray);
+				professorFormPanel.setBackground(Color.lightGray);
+				courseFormPanel.setBackground(Color.lightGray);
 			}
 		});
 
@@ -230,20 +220,20 @@ public class MainFrame extends JFrame {
 	}
 
 	private void createProfessorTab() {
-		professorForm = new ProfessorFormPanel();
+		professorFormPanel = new ProfessorFormPanel();
 		professorTablePanel = new ProfessorTablePanel();
 		professorArray = new ArrayList<ProfessorUI>();
-		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, professorForm, professorTablePanel);
+		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, professorFormPanel, professorTablePanel);
 		split.setOneTouchExpandable(true);
 		tab.add("Professor", split);
 		add(tab, BorderLayout.CENTER);
-		professorForm.setProfessor(new ProfessorListener() {
+		professorFormPanel.setProfessor(new ProfessorListener() {
 
 			@Override
 			public void addProfessorObject(ProfessorUI professorObject) {
 				professorArray.add(professorObject);
 				professorTablePanel.setTableModelDataSource(professorArray);
-				courseForm.setDataUtilArray(DataUtil.professorList);
+				courseFormPanel.setDataUtilArray(DataUtil.professorList);
 				professorTablePanel.refreshProfessorTable();
 			}
 		});
@@ -251,14 +241,14 @@ public class MainFrame extends JFrame {
 	}
 
 	private void createCourseTab() {
-		courseForm = new CourseFormPanel();
+		courseFormPanel = new CourseFormPanel();
 		courseTablePanel = new CourseTablePanel();
 		courseArray = new ArrayList<CourseUI>();
-		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, courseForm, courseTablePanel);
+		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, courseFormPanel, courseTablePanel);
 		split.setOneTouchExpandable(true);
 		tab.add("Course", split);
 		add(tab, BorderLayout.CENTER);
-		courseForm.setCourse(new CourseListener() {
+		courseFormPanel.setCourse(new CourseListener() {
 
 			@Override
 			public void addCourseObject(CourseUI courseObject) {
@@ -271,17 +261,17 @@ public class MainFrame extends JFrame {
 	}
 
 	private void createStudentTab() {
-		studentForm = new StudentFormPanel();
+		studentFormPanel = new StudentFormPanel();
 		StudenttablePanel = new StudentTablePanel();
 		studentArray = new ArrayList<>();
-		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, studentForm, StudenttablePanel);
+		split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, studentFormPanel, StudenttablePanel);
 		split.setOneTouchExpandable(true);
 		tab.add("student", split);
 		add(tab, BorderLayout.CENTER);
-		studentForm.setIStudentListener(new IStudentListener() {
+		studentFormPanel.setIStudentListener(new IStudentListener() {
 
 			@Override
-			public void addStudentObject(StudentUI studentObject) {
+			public void createStudentArray(StudentUI studentObject) {
 				studentArray.add(studentObject);
 				StudenttablePanel.setTableModelDataSource(studentArray);
 				StudenttablePanel.refreshStudentTable();
