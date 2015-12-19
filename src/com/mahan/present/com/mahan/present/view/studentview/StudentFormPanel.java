@@ -1,6 +1,7 @@
 package com.mahan.present.com.mahan.present.view.studentview;
 import com.mahan.present.StudentType;
 import com.mahan.present.Validation;
+import com.mahan.present.com.mahan.present.model.StudentUI;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -8,7 +9,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-
 
 public class StudentFormPanel extends JPanel {
 	private JLabel firstNameLabel;
@@ -61,38 +61,44 @@ public class StudentFormPanel extends JPanel {
 
 	private void createFields() {
 
-		JLabel firstNameLabel = new JLabel("First Name:");
-		JTextField firstNameText = new JTextField(15);
+		firstNameLabel = new JLabel("First Name:");
+		firstNameText = new JTextField(15);
 		layOutComponent(firstNameLabel, firstNameText, GridBagConstraints.PAGE_START, 0, 0, 1, 0);
 
-		JLabel lastNameLabel = new JLabel("Last Name:");
-		JTextField lastNameText = new JTextField(15);
+		lastNameLabel = new JLabel("Last Name:");
+		lastNameText = new JTextField(15);
 		layOutComponent(lastNameLabel, lastNameText, GridBagConstraints.PAGE_START, 0, 1, 1, 1);
 
-		JLabel usernameLabel = new JLabel("Username:");
-		JTextField usernameText = new JTextField(15);
+		usernameLabel = new JLabel("Username:");
+		usernameText = new JTextField(15);
 		layOutComponent(usernameLabel, usernameText, GridBagConstraints.PAGE_START, 0, 2, 1, 2);
 
-		JLabel PasswordLabel = new JLabel("Password:");
-		JTextField passwordText = new JTextField(15);
+		PasswordLabel = new JLabel("Password:");
+		passwordText = new JTextField(15);
 		layOutComponent(PasswordLabel, passwordText, GridBagConstraints.PAGE_START, 0, 3, 1, 3);
 
-		JLabel studentNoLabel = new JLabel("Student_No:");
-		JTextField studentNoText = new JTextField(15);
+		studentNoLabel = new JLabel("Student_No:");
+		studentNoText = new JTextField(15);
 		layOutComponent(studentNoLabel, studentNoText, GridBagConstraints.FIRST_LINE_START, 2, 0, 3, 0);
 
-		JLabel phoneNumberLabel = new JLabel("Phone Number:");
-		JTextField phoneNumberText = new JTextField(15);
+		phoneNumberLabel = new JLabel("Phone Number:");
+		phoneNumberText = new JTextField(15);
 		layOutComponent(phoneNumberLabel, phoneNumberText, GridBagConstraints.FIRST_LINE_START, 2, 1, 3, 1);
 
-		JLabel emailAddressLabel = new JLabel("Email Address:");
-		JTextField emailAddressText = new JTextField(15);
+		emailAddressLabel = new JLabel("Email Address:");
+		emailAddressText = new JTextField(15);
 		layOutComponent(emailAddressLabel, emailAddressText, GridBagConstraints.FIRST_LINE_START, 2, 2, 3, 2);
 
-		JLabel addressLabel = new JLabel("Address:");
-		JTextField addressText = new JTextField(15);
+		addressLabel = new JLabel("Address:");
+		addressText = new JTextField(15);
 		layOutComponent(addressLabel, addressText, GridBagConstraints.FIRST_LINE_START, 2, 3, 3, 3);
 
+		createStdTypeComboBox();
+		createSubmitButton(layout);
+
+	}
+
+	private void createStdTypeComboBox() {
 		typeLabel = new JLabel("stdType :");
 		stdTypeCombo = new JComboBox();
 		DefaultComboBoxModel stdmodel = new DefaultComboBoxModel();
@@ -102,9 +108,6 @@ public class StudentFormPanel extends JPanel {
 		stdTypeCombo.setModel(stdmodel);
 		add(typeLabel);
 		add(stdTypeCombo);
-
-		createSubmitButton(layout);
-
 	}
 
 	private void createSubmitButton(GridBagConstraints l) {
@@ -151,7 +154,7 @@ public class StudentFormPanel extends JPanel {
 
 						StudentUI std = new StudentUI(firstNameText.getText(), lastNameText.getText(), usernameText.getText(), passwordText.getText(), studentNoText.getText(),
 								phoneNumberText.getText(), emailAddressText.getText(), addressText.getText() , StudentType.MS);
-						iStudentListener.addStudentObject(std);
+						iStudentListener.createStudentArray(std);
 						cleanTextFeilds();
 
 					}else{
@@ -171,10 +174,6 @@ public class StudentFormPanel extends JPanel {
 				}
 			});
 		}
-	
-
-
-
 
 	public void layOutComponent(JLabel label, JTextField textField, int anchor, int LableGridX, int LableGridY, int TextFieldGridX, int TextFieldGridY) {
 
